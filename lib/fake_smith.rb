@@ -51,7 +51,7 @@ module Smith
       end
 
       def subscribe(&blk)
-        SmithFaking.define_subscription(@queue_name, &blk)
+        FakeSmith.define_subscription(@queue_name, &blk)
       end
     end
   end
@@ -65,7 +65,7 @@ module Smith
       end
 
       def publish(message, &blk)
-        SmithFaking.add_message(@queue_name, message)
+        FakeSmith.add_message(@queue_name, message)
       end
     end
   end
