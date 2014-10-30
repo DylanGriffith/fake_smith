@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = FakeSmith::VERSION
   spec.authors       = ["Dylan Griffith"]
   spec.email         = ["dyl.griffith@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Gem For Stubbing Smith in tests}
+  spec.description   = %q{Gem For Stubbing Smith in tests}
+  spec.homepage      = "https://github.com/DylanGriffith/fake_smith"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
