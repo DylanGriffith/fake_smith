@@ -30,7 +30,7 @@ In your spec_helper or in your spec simply:
 require 'fake_smith'
 ```
 
-This will stub out all smith methods so you are free to test your agents without even enabling EventMachine (though you may need to if you agent depends on eventmachine stuff)
+This will stub out all smith methods so you are free to test your agents without even starting EventMachine (though you may need to if you agent depends on EventMachine stuff)
 
 To start your agent:
 
