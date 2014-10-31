@@ -2,6 +2,7 @@ require "fake_smith/version"
 
 class FakeSmith
   def self.send_message(queue_name, payload, receiver)
+    raise "no subscribers on queue: #{queue_name}" unless subscriptions[queue_name]
     subscriptions[queue_name].call(payload, receiver)
   end
 
