@@ -53,7 +53,7 @@ messages = FakeSmith.get_messsages("my_other_queue")
 expect(messages.count).to eq(1)
 ```
 
-*NOTE* If you run into an error stating `wrong number of arguments (0 for 1)`
+**NOTE** If you run into an error stating `wrong number of arguments (0 for 1)`
 when trying to `new` up your agent then you probably have a
 `require 'smith/agent'` in your agent. This will overwrite the fake Smith
 agent and thus the stubbing won't work. You do not need these requires
