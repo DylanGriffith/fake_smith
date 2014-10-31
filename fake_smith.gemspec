@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Gem For Stubbing Smith in tests}
   spec.description   = %q{Gem For Stubbing Smith in tests}
   spec.homepage      = "https://github.com/DylanGriffith/fake_smith"
-  spec.license       = "MIT"
+  spec.license       = "GPL-3"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
