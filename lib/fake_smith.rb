@@ -74,6 +74,10 @@ module Smith
       def subscribe(&blk)
         FakeSmith.define_subscription(@queue_name, &blk)
       end
+
+      def requeue_parameters(opts)
+        @requeue_opts = opts
+      end
     end
   end
 end
@@ -109,7 +113,9 @@ module Smith
     end
 
     def receiver(queue_name, opts={}, &blk)
-      Smith::Messaging::Receiver.new(queue_name, opts, &blk)
+      r = Smith::Messaging::Receiver.new(queue_name, opts, &blk)
+      blk.call r
+      r
     end
 
     def sender(queue_name, opts={}, &blk)
