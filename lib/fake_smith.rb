@@ -51,7 +51,7 @@ class FakeSmith
     end
 
     [:verbose, :debug, :info, :warn, :error, :fatal].each do |level|
-      define_method(level) do |data, &blk|
+      define_method(level = nil) do |data, &blk|
         if block_given?
           log(level) << yield
         else
