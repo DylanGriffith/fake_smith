@@ -40,6 +40,26 @@ class FakeSmith
   def self.clear_subscriptions
     @subscriptions = {}
   end
+
+  class Logger
+    def initialize
+      @logs = {}
+    end
+
+    def log(level)
+      @logs[level] ||= []
+    end
+
+    [:verbose, :debug, :info, :warn, :error, :fatal].each do |level|
+      define_method(level) do |data, &blk|
+        if block_given?
+          log(level) << yield
+        else
+          log(level) << data
+        end
+      end
+    end
+  end
 end
 
 module Smith
@@ -70,6 +90,7 @@ module Smith
     end
   end
 end
+
 
 module Smith
   class Agent
@@ -107,6 +128,14 @@ module Smith
     end
 
     def queues
+    end
+
+    def logger
+      @b06b2bd ||= FakeSmith::Logger.new
+    end
+
+    def get_test_logger
+      logger
     end
   end
 end
