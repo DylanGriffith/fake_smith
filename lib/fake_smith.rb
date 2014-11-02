@@ -114,13 +114,13 @@ module Smith
 
     def receiver(queue_name, opts={}, &blk)
       r = Smith::Messaging::Receiver.new(queue_name, opts, &blk)
-      blk.call r
+      blk.call r if block_given?
       r
     end
 
     def sender(queue_name, opts={}, &blk)
       s = Smith::Messaging::Sender.new(queue_name)
-      blk.call(s)
+      blk.call(s) if block_given?
     end
 
     def acknowledge_start(&blk)
