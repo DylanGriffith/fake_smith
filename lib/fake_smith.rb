@@ -24,6 +24,10 @@ class FakeSmith
     clear_messages
   end
 
+  def self.subscribed_queues
+    subscriptions.keys
+  end
+
   private
 
   def self.messages
