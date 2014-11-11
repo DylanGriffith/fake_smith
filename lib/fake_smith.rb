@@ -91,12 +91,16 @@ module Smith
     class Sender
       def initialize(queue_name, &blk)
         @queue_name = queue_name
-        blk.call
+        blk.call(self) if block_given?
       end
 
       def publish(message, &blk)
         FakeSmith.add_message(@queue_name, message)
         blk.call
+      end
+
+      def message_count(&blk)
+        blk.call FakeSmith.get_messages(@queue_name).count if block_given?
       end
     end
   end
