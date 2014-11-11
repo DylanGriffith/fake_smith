@@ -89,12 +89,14 @@ end
 module Smith
   module Messaging
     class Sender
-      def initialize(queue_name)
+      def initialize(queue_name, &blk)
         @queue_name = queue_name
+        blk.call
       end
 
       def publish(message, &blk)
         FakeSmith.add_message(@queue_name, message)
+        blk.call
       end
     end
   end
