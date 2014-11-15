@@ -96,7 +96,7 @@ module Smith
 
       def publish(message, &blk)
         FakeSmith.add_message(@queue_name, message)
-        blk.call
+        blk.call if block_given?
       end
 
       def message_count(&blk)
