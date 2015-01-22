@@ -110,6 +110,9 @@ end
 module Smith
   class Agent
 
+    def initialize
+    end
+
     def self.options(opts)
     end
 
