@@ -1,3 +1,4 @@
+require "smith/agent"
 require "fake_smith/version"
 
 class FakeSmith
