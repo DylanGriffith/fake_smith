@@ -1,6 +1,6 @@
 # FakeSmith
 
-FakeSmith is here to help you unit test your Smith Agents.
+FakeSmith is here to help you unit test your [Smith](https://github.com/filterfish/smith2) Agents.
 
 Have you ever wanted to test your agents without having to worry about all the overhead of running the agency and sending messages and waiting asynchronously for the magic to happen? Well want no longer and do now!
 
