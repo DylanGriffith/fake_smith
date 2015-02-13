@@ -23,10 +23,15 @@ class FakeSmith
   def self.clear_all
     clear_subscriptions
     clear_messages
+    clear_logger
   end
 
   def self.subscribed_queues
     subscriptions.keys
+  end
+
+  def self.logger
+    @logger ||= FakeSmith::Logger.new
   end
 
   private
@@ -47,7 +52,13 @@ class FakeSmith
     @subscriptions = {}
   end
 
+  def self.clear_logger
+    @logger = nil
+  end
+
   class Logger
+    attr_reader :logs
+
     def initialize
       @logs = {}
     end
@@ -152,7 +163,7 @@ module Smith
     end
 
     def logger
-      @b06b2bd ||= FakeSmith::Logger.new
+      FakeSmith.logger
     end
 
     def get_test_logger
