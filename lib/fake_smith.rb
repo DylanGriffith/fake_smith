@@ -85,6 +85,7 @@ module Smith
       def initialize(queue_name, options = {})
         @queue_name = queue_name
         @options = options
+        @auto_ack = options[:auto_ack] == false ? options[:auto_ack] : true
       end
 
       def subscribe(&blk)
