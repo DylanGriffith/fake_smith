@@ -101,6 +101,8 @@ end
 module Smith
   module Messaging
     class Sender
+      attr_reader :queue_name
+
       def initialize(queue_name, _opts = nil, &blk)
         @queue_name = queue_name
         blk.call(self) if block_given?
