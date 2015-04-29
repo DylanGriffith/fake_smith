@@ -94,6 +94,10 @@ module Smith
       def requeue_parameters(opts)
         @requeue_opts = opts
       end
+
+      def on_requeue_limit(&blk)
+        @on_requeue_limit = blk
+      end
     end
   end
 end
