@@ -149,9 +149,8 @@ module Smith
       r
     end
 
-    def sender(queue_name, opts={}, &blk)
-      s = Smith::Messaging::Sender.new(queue_name)
-      blk.call(s) if block_given?
+    def sender(queue_names, opts={}, &blk)
+      Array(queue_names).each { |queue_name| Smith::Messaging::Sender.new(queue_name, opts, &blk)  }
     end
 
     def acknowledge_start(&blk)
