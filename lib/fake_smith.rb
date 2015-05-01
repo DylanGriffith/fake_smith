@@ -1,10 +1,24 @@
-require "smith/agent"
+begin
+  require "smith/agent"
+rescue LoadError
+end
+
 require "fake_smith/version"
 
 class FakeSmith
+  class ReceiverDecorator < SimpleDelegator
+    def ack
+      raise MessageAckedTwiceError, "message was acked twice" if @acked
+      @acked = true
+      super
+    end
+  end
+
+  class MessageAckedTwiceError < StandardError; end
+
   def self.send_message(queue_name, payload, receiver)
     raise "no subscribers on queue: #{queue_name}" unless subscriptions[queue_name]
-    subscriptions[queue_name].call(payload, receiver)
+    subscriptions[queue_name].call(payload, ReceiverDecorator.new(receiver))
   end
 
   def self.define_subscription(queue_name, &blk)
