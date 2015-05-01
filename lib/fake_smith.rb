@@ -1,14 +1,33 @@
-require "smith/agent"
+begin
+  require "smith/agent"
+rescue LoadError
+end
+
 require "fake_smith/version"
 
 class FakeSmith
+  class ReceiverDecorator < SimpleDelegator
+    def ack
+      raise MessageAckedTwiceError, "message was acked twice" if @acked
+      @acked = true
+      super
+    end
+  end
+
+  class MessageAckedTwiceError < StandardError; end
+
   def self.send_message(queue_name, payload, receiver)
     raise "no subscribers on queue: #{queue_name}" unless subscriptions[queue_name]
+    receiver = ReceiverDecorator.new(receiver)
+    opts = subscriptions_options[queue_name]
+    auto_ack = opts.key?(:auto_ack) ? opts[:auto_ack] : true
+    receiver.ack if auto_ack
     subscriptions[queue_name].call(payload, receiver)
   end
 
-  def self.define_subscription(queue_name, &blk)
+  def self.define_subscription(queue_name, options, &blk)
     subscriptions[queue_name] = blk
+    subscriptions_options[queue_name] = options
   end
 
   def self.get_messages(queue_name)
@@ -46,6 +65,10 @@ class FakeSmith
 
   def self.subscriptions
     @subscriptions ||= {}
+  end
+
+  def self.subscriptions_options
+    @subscriptions_options ||= {}
   end
 
   def self.clear_subscriptions
@@ -88,7 +111,7 @@ module Smith
       end
 
       def subscribe(&blk)
-        FakeSmith.define_subscription(@queue_name, &blk)
+        FakeSmith.define_subscription(@queue_name, @options, &blk)
       end
 
       def requeue_parameters(opts)
