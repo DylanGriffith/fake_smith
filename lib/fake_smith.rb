@@ -4,6 +4,7 @@ rescue LoadError
 end
 
 require "fake_smith/version"
+require "delegate"
 
 class FakeSmith
   class ReceiverDecorator < SimpleDelegator
@@ -11,6 +12,11 @@ class FakeSmith
       raise MessageAckedTwiceError, "message was acked twice" if @acked
       @acked = true
       super
+    end
+    alias :call :ack
+
+    def to_proc
+      proc { |obj| ack }
     end
   end
 
