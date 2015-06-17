@@ -36,6 +36,11 @@ class FakeSmith
     subscriptions_options[queue_name] = options
   end
 
+  def self.undefine_subscription(queue_name, &blk)
+    subscriptions.delete(queue_name)
+    blk.call
+  end
+
   def self.get_messages(queue_name)
     messages[queue_name] ||= []
   end
@@ -118,6 +123,10 @@ module Smith
 
       def subscribe(&blk)
         FakeSmith.define_subscription(@queue_name, @options, &blk)
+      end
+
+      def unsubscribe(&blk)
+        FakeSmith.undefine_subscription(@queue_name, &blk)
       end
 
       def requeue_parameters(opts)
