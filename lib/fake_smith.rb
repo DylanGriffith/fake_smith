@@ -22,6 +22,15 @@ class FakeSmith
 
   class MessageAckedTwiceError < StandardError; end
 
+  def self.set_reply_handler(queue_name, &blk)
+    @reply_handlers ||= {}
+    @reply_handlers[queue_name] = blk
+  end
+
+  def self.reply_handlers
+    @reply_handlers
+  end
+
   def self.send_message(queue_name, payload, receiver)
     raise "no subscribers on queue: #{queue_name}" unless subscriptions[queue_name]
     receiver = ReceiverDecorator.new(receiver)
@@ -150,9 +159,19 @@ module Smith
         blk.call(self) if block_given?
       end
 
+      def on_reply(_opts, &blk)
+        @on_reply = blk
+      end
+
+      def on_timeout(&blk)
+      end
+
       def publish(message, &blk)
         FakeSmith.add_message(@queue_name, message)
         blk.call if block_given?
+        if FakeSmith.reply_handlers[@queue_name] && @on_reply
+          @on_reply.call(FakeSmith.reply_handlers[@queue_name].call(message))
+        end
       end
 
       def message_count(&blk)
