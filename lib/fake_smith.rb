@@ -28,7 +28,7 @@ class FakeSmith
   end
 
   def self.reply_handlers
-    @reply_handlers
+    @reply_handlers ||= {}
   end
 
   def self.send_message(queue_name, payload, receiver)
