@@ -1,4 +1,5 @@
 begin
+  require "smith"
   require "smith/agent"
 rescue LoadError
 end
