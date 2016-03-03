@@ -167,7 +167,7 @@ module Smith
       def on_timeout(&blk)
       end
 
-      def publish(message, &blk)
+      def publish(message, opts={}, &blk)
         FakeSmith.add_message(@queue_name, message)
         blk.call if block_given?
         if FakeSmith.reply_handlers[@queue_name] && @on_reply
