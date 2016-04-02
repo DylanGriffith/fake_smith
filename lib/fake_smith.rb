@@ -63,15 +63,10 @@ class FakeSmith
   def self.clear_all
     clear_subscriptions
     clear_messages
-    clear_logger
   end
 
   def self.subscribed_queues
     subscriptions.keys
-  end
-
-  def self.logger
-    @logger ||= FakeSmith::Logger.new
   end
 
   private
@@ -94,32 +89,6 @@ class FakeSmith
 
   def self.clear_subscriptions
     @subscriptions = {}
-  end
-
-  def self.clear_logger
-    @logger = nil
-  end
-
-  class Logger
-    attr_reader :logs
-
-    def initialize
-      @logs = {}
-    end
-
-    def log(level)
-      @logs[level] ||= []
-    end
-
-    [:verbose, :debug, :info, :warn, :error, :fatal].each do |level|
-      define_method(level) do |data = nil, &blk|
-        if blk
-          log(level) << blk.call
-        else
-          log(level) << data
-        end
-      end
-    end
   end
 end
 
@@ -223,14 +192,6 @@ module Smith
     end
 
     def queues
-    end
-
-    def logger
-      FakeSmith.logger
-    end
-
-    def get_test_logger
-      logger
     end
   end
 end
