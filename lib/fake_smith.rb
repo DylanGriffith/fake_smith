@@ -19,6 +19,14 @@ class FakeSmith
     def to_proc
       proc { |obj| ack }
     end
+
+    def queue_name=(name)
+      @queue_name = name
+    end
+
+    def queue_name
+      @queue_name
+    end
   end
 
   class MessageAckedTwiceError < StandardError; end
@@ -38,6 +46,7 @@ class FakeSmith
     opts = subscriptions_options[queue_name]
     auto_ack = opts.key?(:auto_ack) ? opts[:auto_ack] : true
     receiver.ack if auto_ack
+    receiver.queue_name = queue_name
     subscriptions[queue_name].call(payload, receiver)
   end
 
