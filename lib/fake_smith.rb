@@ -9,6 +9,8 @@ require "delegate"
 
 class FakeSmith
   class ReceiverDecorator < SimpleDelegator
+    attr_accessor :queue_name
+
     def ack
       raise MessageAckedTwiceError, "message was acked twice" if @acked
       @acked = true
@@ -18,14 +20,6 @@ class FakeSmith
 
     def to_proc
       proc { |obj| ack }
-    end
-
-    def queue_name=(name)
-      @queue_name = name
-    end
-
-    def queue_name
-      @queue_name
     end
   end
 
